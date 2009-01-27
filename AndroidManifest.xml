@@ -3,6 +3,7 @@
       package="com.espressolabs.android.TextProto"
       android:versionCode="1"
       android:versionName="1.0.0">
+	<uses-permission android:name="android.permission.RECEIVE_SMS" />
     <application android:icon="@drawable/icon" android:label="@string/app_name">
         <activity android:name=".TextActivity"
                   android:label="@string/app_name">
@@ -11,5 +12,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+		<receiver android:name=".TextReceiver" android:enabled="true">
+			<intent-filter>
+				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
+			</intent-filter>
+		</receiver>
     </application>
+
 </manifest> 
