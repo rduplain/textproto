@@ -12,19 +12,30 @@ public class TextReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		// Run a flight check.
 		if(!intent.getAction().equals(intentName)) {
 			return;
 		}
+		// Get all SmsMessages in the intent.
 		SmsMessage ss[] = getSmsMessages(intent);
 
+		// Welcome aboard.  Let's run through each SmsMessage.
 		for(int i = 0; i < ss.length; ++i) {
+			// We want the address of the sender and the message body.
+			String address = ss[i].getOriginatingAddress();
 			String message = ss[i].getDisplayMessageBody();
-			String addr = ss[i].getOriginatingAddress();
+			// Act on the message, if it's not empty.
 			if(message != null && message.length() > 0) {
-				Log.i("TextReceiver",  addr + ": " + message);
+				Log.i("TextReceiver",  address + ": " + message);
+
+				// Pass the message along to the TextRouter.
+				Intent newIntent = new Intent(context, TextRouter.class);
+				newIntent.putExtra("type", "sms");
+				newIntent.putExtra("sender", address);
+				newIntent.putExtra("message", message);
+				context.startService(newIntent);
 			}
 		}
-
 	}
 
     private SmsMessage[] getSmsMessages(Intent intent) {
@@ -43,5 +54,4 @@ public class TextReceiver extends BroadcastReceiver {
     	}
     	return msg;
     }
-
 }
