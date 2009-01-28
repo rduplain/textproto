@@ -16,11 +16,12 @@ public class TextReceiver extends BroadcastReceiver {
 			return;
 		}
 		SmsMessage ss[] = getSmsMessages(intent);
-        
+
 		for(int i = 0; i < ss.length; ++i) {
 			String message = ss[i].getDisplayMessageBody();
+			String addr = ss[i].getOriginatingAddress();
 			if(message != null && message.length() > 0) {
-				Log.i("TextReceiver:",  message);
+				Log.i("TextReceiver",  addr + ": " + message);
 			}
 		}
 
