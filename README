@@ -1,2 +1,5 @@
 Basic prototyping for text/sms handling in Android.
 Use at your own risk.
+
+SMS -> TextReceiver -> TextRouter -> TextSender -> SMS
+                                     TextCallBack <-|
