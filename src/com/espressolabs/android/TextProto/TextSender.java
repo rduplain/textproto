@@ -33,6 +33,7 @@ public class TextSender extends Service {
 			// Note: you'll have to pay SMS charges.
 			if(address.endsWith("xxxyyyzzzz")) {
 				Log.i("TextSender",  "echo message to " + address);
+				message = "(Test) You said:" + message;
 
 				SmsManager manager = SmsManager.getDefault();
 				// Use sendMultipartTextMessage instead of sendTextMessage.
