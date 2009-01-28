@@ -18,6 +18,11 @@
 				<action android:name="android.provider.Telephony.SMS_RECEIVED" />
 			</intent-filter>
 		</receiver>
+		<receiver android:name=".TextCallback" android:enabled="true">
+			<intent-filter>
+				<action android:name="com.espressolabs.android.TEXT_CALLBACK" />
+			</intent-filter>
+		</receiver>
 	    <service android:name=".TextRouter"></service>
 	    <service android:name=".TextSender"></service>
     </application>

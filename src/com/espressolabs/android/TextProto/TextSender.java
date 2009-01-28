@@ -2,6 +2,7 @@ package com.espressolabs.android.TextProto;
 
 import java.util.ArrayList;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,10 +38,20 @@ public class TextSender extends Service {
 				// Use sendMultipartTextMessage instead of sendTextMessage.
 				// This supports messages of arbitrary length.
 				ArrayList<String> parts = manager.divideMessage(message);
-				// TODO Give SmsManager a useful intent to send upon delivery.
+				// Give SmsManager a useful intent to send upon delivery.
 				// ... one for each part of the message.
-				manager.sendMultipartTextMessage(address, null, 
-						parts, null, null);
+				ArrayList<PendingIntent> pendingIntents = 
+					new ArrayList<PendingIntent>();
+				for(int i = 0; i < parts.size(); ++i) {
+					Intent newIntent = new Intent(this, TextCallback.class);
+					newIntent.putExtra("address", address);
+					newIntent.putExtra("message", parts.get(i));
+					pendingIntents.add(PendingIntent.getBroadcast(this, 0,
+							newIntent, 0));
+				}
+				// sentIntents, deliveryIntents, or both?
+				manager.sendMultipartTextMessage(address, null, parts,
+						pendingIntents, null);
 			}
 		}
 		super.onStart(intent, startId);
