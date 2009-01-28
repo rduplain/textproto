@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class TextRouter extends Service {
+public class TextSender extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -17,18 +17,19 @@ public class TextRouter extends Service {
 	@Override
 	public void onStart(Intent intent, int startId) {
 		Bundle extras = intent.getExtras();
-		String sender = extras.getString("sender");
+		String address = extras.getString("address");
 		String message = extras.getString("message");
 
 		// Act on the message, if it's not empty.
 		if(message != null && message.length() > 0) {
-			Log.i("TextRouter",  sender + ": " + message);
+			Log.i("TextSender",  address + ": " + message);
 
-			// For now, pass the message along to the TextSender.
-			Intent newIntent = new Intent(this, TextSender.class);
-			newIntent.putExtra("address", sender);
-			newIntent.putExtra("message", message);
-			this.startService(newIntent);
+			// Test with a loopback, based on target.
+			// Replace xxxyyyzzzz with your spare SMS-capable phone.
+			// Note: you'll have to pay SMS charges.
+			if(address.endsWith("xxxyyyzzzz")) {
+				Log.i("TextSender",  "echo message to " + address);
+			}
 		}
 		super.onStart(intent, startId);
 	}

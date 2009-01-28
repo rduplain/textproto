@@ -18,6 +18,7 @@
 			</intent-filter>
 		</receiver>
 	    <service android:name=".TextRouter"></service>
+	    <service android:name=".TextSender"></service>
     </application>
 
 </manifest>
