@@ -29,11 +29,11 @@ public class TextSender extends Service {
 			Log.i("TextSender",  address + ": " + message);
 
 			// Test with a loopback, based on target.
-			// Replace xxxyyyzzzz with your spare SMS-capable phone.
+			// Replace xxxyyyzzzz with number of your spare SMS-capable phone.
 			// Note: you'll have to pay SMS charges.
 			if(address.endsWith("xxxyyyzzzz")) {
 				Log.i("TextSender",  "echo message to " + address);
-				message = "(Test) You said:" + message;
+				message = "(Test) You said: " + message;
 
 				SmsManager manager = SmsManager.getDefault();
 				// Use sendMultipartTextMessage instead of sendTextMessage.
@@ -50,9 +50,13 @@ public class TextSender extends Service {
 					pendingIntents.add(PendingIntent.getBroadcast(this, 0,
 							newIntent, 0));
 				}
-				// sentIntents, deliveryIntents, or both?
-				manager.sendMultipartTextMessage(address, null, parts,
-						pendingIntents, null);
+				try {
+					// HERE Provide sentIntents, deliveryIntents, or both?
+					manager.sendMultipartTextMessage(address, null, parts,
+							pendingIntents, null);
+				} catch(Exception e) {
+					Log.e("TextSender.onStart", "failed to send", e);
+		    	}
 			}
 		}
 		super.onStart(intent, startId);
